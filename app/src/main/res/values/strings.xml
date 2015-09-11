@@ -15,8 +15,8 @@
     <string name="delete_all">Удалить все</string>
     <string name="settings">Настройки</string>
     <string name="refresh">Обновить</string>
-    <string name="endpoint_hint">URL сервера(http://xxx.yy/…/)</string>
-    <string name="number_hint">Номер SMS(пусто - все сообщения)</string>
+    <string name="number_hint">Номер SMS (пусто - все сообщения)</string>
+    <string name="endpoint_hint"><![CDATA[URL сервера (http://xxx.yy/…/<methodname>)]]></string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
     <string name="settings_title">Настройки приложения</string>
