@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#009688</color>
+    <color name="primaryDark">#00796B</color>
+    <color name="primaryLight">#B2DFDB</color>
+
+    <color name="primaryTrans">#66009688</color>>
+
+    <color name="secondary">@color/white</color>
+    <color name="secondaryDark">#ff611c4b</color>
+
+    <color name="accent">#607D8B</color>
+
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#727272</color>
+
+    <color name="text">@color/white</color>
+    <color name="white">#ffffff</color>
+</resources>

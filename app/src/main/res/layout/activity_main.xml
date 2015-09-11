@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/activity_half_vertical_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_half_vertical_margin"
+            android:paddingRight="@dimen/activity_half_vertical_margin">
+
+            <TextView
+                android:id="@+id/txt_messages_unsent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_rounded_corners"
+                android:padding="@dimen/activity_half_vertical_margin"
+                android:gravity="center"
+                android:textColor="@color/text" />
+
+            <TextView
+                android:id="@+id/txt_messages_sent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/activity_half_vertical_margin"
+                android:background="@drawable/bg_rounded_corners"
+                android:padding="@dimen/activity_half_vertical_margin"
+                android:textColor="@color/text" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+    </LinearLayout>
+</LinearLayout>

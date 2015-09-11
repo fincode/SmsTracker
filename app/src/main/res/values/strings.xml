@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">SmsTracker</string>
+
+    <string name="unsent">Не отправлено</string>
+    <string name="sent">Отправлено</string>
+
+    <string name="status_icon">Иконка статуса</string>
+
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="delete_all_data">Вы действительно хотите удалить все данные приложения?</string>
+    <string name="delete_err">Произошла ошибка во время удаления данных</string>
+    <string name="delete_success">Данные успешно удалены</string>
+    <string name="delete_all">Удалить все</string>
+    <string name="settings">Настройки</string>
+    <string name="refresh">Обновить</string>
+    <string name="endpoint_hint">URL сервера(http://xxx.yy/…/)</string>
+    <string name="number_hint">Номер SMS(пусто - все сообщения)</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="settings_title">Настройки приложения</string>
+    <string name="enable_server_send">Отправлять SMS на сервер</string>
+    <string name="process_sms_another_app">Прерывать обработку SMS другими приложениями (работает не на всех версиях)</string>
+    <string name="scan_sms">Сканировать SMS</string>
+    <string name="send">Отправить</string>
+    <string name="sent_success">Сообщения отправлены на сервер</string>
+    <string name="sent_fail">Не удалось отправить сообщения</string>
+    <string name="delete_from_db">Удалить из базы</string>
+
+</resources>

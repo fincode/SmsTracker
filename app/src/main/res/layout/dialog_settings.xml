@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <EditText
+        android:id="@+id/et_settings_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:ellipsize="end"
+        android:ems="10"
+        android:hint="@string/number_hint"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:maxLines="1"
+        android:nextFocusDown="@+id/et_settings_endpoint"
+        android:textSize="13sp" />
+
+    <EditText
+        android:id="@+id/et_settings_endpoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/et_settings_phone"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:ems="10"
+        android:hint="@string/endpoint_hint"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:maxLines="2"
+        android:minLines="2"
+        android:nextFocusDown="@+id/cb_settings_send_enable"
+        android:textSize="13sp" />
+
+    <CheckBox
+        android:id="@+id/cb_settings_send_enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/et_settings_endpoint"
+        android:checked="true"
+        android:text="@string/enable_server_send" />
+
+    <CheckBox
+        android:id="@+id/cb_settings_sms_abort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/cb_settings_send_enable"
+        android:checked="true"
+        android:text="@string/process_sms_another_app" />
+
+</RelativeLayout>
