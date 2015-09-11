@@ -2,7 +2,7 @@ package com.fincode.smstracker.preferences;
 
 public class Preferences {
     private String phoneNumber;
-    private String endpoint;
+    private String serverUrl;
     private boolean sendEnabled;
     private boolean abortSms;
 
@@ -15,12 +15,12 @@ public class Preferences {
         return this;
     }
 
-    public String getEndpoint() {
-        return endpoint;
+    public String getServerUrl() {
+        return serverUrl;
     }
 
-    public Preferences setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public Preferences setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
         return this;
     }
 

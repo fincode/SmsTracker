@@ -50,12 +50,11 @@ public class ServerCommunicator {
 
     // Отправка сообщений
     public Boolean sendMessages(List<Message> messages) {
-        String endpoint = App.inst().getPreferences().getEndpoint();
-        int lastSlashIndex = endpoint.lastIndexOf('/');
-        String method = lastSlashIndex == -1 ? "" : endpoint.substring(lastSlashIndex + 1);
+        String serverUrl = App.inst().getPreferences().getServerUrl();
+        int lastSlashIndex = serverUrl.lastIndexOf('/');
+        String method = lastSlashIndex == -1 ? "" : serverUrl.substring(lastSlashIndex + 1);
         Message.Response res = mWebService.sendMessages(method, messages);
         return res != null && res.getResult();
-        //return Utils.isNetworkAvailable();
     }
 
 }

@@ -34,10 +34,13 @@ public class App extends Application {
 
     public void refreshAppSettings() {
         preferences = PreferencesHelper.loadPreferences(this);
-        setServerCommunicator(preferences.getEndpoint());
+        setServerCommunicator(preferences.getServerUrl());
     }
 
-    public void setServerCommunicator(String endpoint) {
+    public void setServerCommunicator(final String url) {
+        int lastSlashIndex = url.lastIndexOf('/');
+        String endpoint = lastSlashIndex == -1 ?
+                url : url.substring(0, lastSlashIndex);
         serverCommunicator = new ServerCommunicator(endpoint);
     }
 

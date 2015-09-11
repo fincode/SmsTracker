@@ -1,7 +1,6 @@
 package com.fincode.smstracker.view;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -210,8 +209,8 @@ public class MainActivity extends AppCompatActivity implements DialogFactory.Dia
 
         final View btnDialogPositive = settingsDialog
                 .getActionButton(DialogAction.POSITIVE);
-        EditText etEndpoint = (EditText) settingsDialog
-                .getCustomView().findViewById(R.id.et_settings_endpoint);
+        EditText etServerUrl = (EditText) settingsDialog
+                .getCustomView().findViewById(R.id.et_settings_server_url);
         EditText etPhoneNumber = (EditText) settingsDialog
                 .getCustomView().findViewById(R.id.et_settings_phone);
         CheckBox cbEnableSend = (CheckBox) settingsDialog
@@ -220,13 +219,13 @@ public class MainActivity extends AppCompatActivity implements DialogFactory.Dia
                 .getCustomView().findViewById(R.id.cb_settings_sms_abort);
 
         Preferences preferences = App.inst().getPreferences();
-        etEndpoint.setText(preferences.getEndpoint());
+        etServerUrl.setText(preferences.getServerUrl());
         etPhoneNumber.setText(preferences.getPhoneNumber());
         cbEnableSend.setChecked(preferences.isSendEnabled());
         cbAbortSms.setChecked(preferences.isAbortSms());
 
-        btnDialogPositive.setEnabled(!etEndpoint.toString().trim().isEmpty());
-        etEndpoint.addTextChangedListener(new TextWatcher() {
+        btnDialogPositive.setEnabled(!etServerUrl.toString().trim().isEmpty());
+        etServerUrl.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {

@@ -52,8 +52,8 @@ public class DialogFactory {
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-                        EditText etEndpoint = (EditText) dialog
-                                .getCustomView().findViewById(R.id.et_settings_endpoint);
+                        EditText etServerUrl = (EditText) dialog
+                                .getCustomView().findViewById(R.id.et_settings_server_url);
                         EditText etPhoneNumber = (EditText) dialog
                                 .getCustomView().findViewById(R.id.et_settings_phone);
                         CheckBox cbEnableSend = (CheckBox) dialog
@@ -63,7 +63,7 @@ public class DialogFactory {
 
                         activity.onSettingsChanged(new Preferences()
                                         .setPhoneNumber(etPhoneNumber.getText().toString())
-                                        .setEndpoint(etEndpoint.getText().toString())
+                                        .setServerUrl(etServerUrl.getText().toString())
                                         .setSendEnabled(cbEnableSend.isChecked())
                                         .setAbortSms(cbAbortSms.isChecked())
                         );
