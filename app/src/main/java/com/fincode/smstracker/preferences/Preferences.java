@@ -5,6 +5,7 @@ public class Preferences {
     private String serverUrl;
     private boolean sendEnabled;
     private boolean abortSms;
+    private String from;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -39,6 +40,15 @@ public class Preferences {
 
     public Preferences setAbortSms(boolean abortSms) {
         this.abortSms = abortSms;
+        return this;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public Preferences setFrom(String from) {
+        this.from = from;
         return this;
     }
 }

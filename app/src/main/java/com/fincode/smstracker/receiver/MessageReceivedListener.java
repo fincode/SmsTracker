@@ -9,7 +9,7 @@ import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
-import com.fincode.smstracker.App;
+import com.fincode.smstracker.app.App;
 import com.fincode.smstracker.model.entities.Message;
 import com.fincode.smstracker.service.MessageSendService;
 
@@ -45,8 +45,7 @@ public class MessageReceivedListener extends BroadcastReceiver {
                 }
                 String body = bodyText.toString();
 
-                Toast.makeText(context, "Sms received", Toast.LENGTH_SHORT).show();
-                MessageSendService.startSendService(new Message(body, timestamp));
+                MessageSendService.startSendService(new Message(body, timestamp, App.inst().getPreferences().getFrom()));
                 // Прерывание обработки SMS другими приложениями (работает не на всех версиях)
                 if (App.inst().getPreferences().isAbortSms())
                     abortBroadcast();

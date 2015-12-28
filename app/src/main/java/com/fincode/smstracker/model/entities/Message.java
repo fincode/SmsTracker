@@ -19,6 +19,7 @@ public class Message {
     public static final String COLUMN_TIMESTAMP = "timestamp";
 
     public static final String COLUMN_SENT = "isSent";
+    public static final String COLUMN_FROM = "from";
 
     @DatabaseField(columnName = COLUMN_ID, generatedId = true)
     private int id;
@@ -28,13 +29,16 @@ public class Message {
     private String text;
     @DatabaseField(columnName = COLUMN_SENT)
     private boolean isSent;
+    @DatabaseField(columnName = COLUMN_FROM)
+    private String from;
 
     public Message() {
     }
 
-    public Message(String text, long timestamp) {
+    public Message(String text, long timestamp, String from) {
         this.text = text;
         this.timestamp = timestamp;
+        this.from = from;
     }
 
     public boolean isSent() {

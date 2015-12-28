@@ -6,7 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.fincode.smstracker.App;
+import com.fincode.smstracker.app.App;
 import com.fincode.smstracker.model.entities.Message;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -92,7 +92,7 @@ public class ContentManager {
 
     public static List<Message> getMessages(boolean isSent) {
         try {
-            QueryBuilder<Message, Integer> qb = App.inst().getDatabase().getMessageDao().queryBuilder();
+            QueryBuilder<Message, Integer> qb = App.inst().getDatabase().getMessageDao().queryBuilder().orderBy(Message.COLUMN_TIMESTAMP, false);
             qb.where().eq(Message.COLUMN_SENT, isSent).prepare();
             return qb.query();
         } catch (SQLException e) {
@@ -128,11 +128,12 @@ public class ContentManager {
         cursor.moveToLast();
         List<Message> messageList = new ArrayList<Message>();
         while (cursor.moveToPrevious()) {
-            String body =  cursor.getString(cursor.getColumnIndex("body"));
+            String body = cursor.getString(cursor.getColumnIndex("body"));
             messageList.add(
                     new Message(
                             cursor.getString(cursor.getColumnIndex("body")),
-                            cursor.getLong(cursor.getColumnIndex("date"))
+                            cursor.getLong(cursor.getColumnIndex("date")),
+                            App.inst().getPreferences().getFrom()
                     ).setSent(false)
             );
         }

@@ -28,4 +28,7 @@
     <string name="sent_fail">Не удалось отправить сообщения</string>
     <string name="delete_from_db">Удалить из базы</string>
 
+    <string name="sending_message">Идет отправка сообщений…</string>
+    <string name="from_hint">Имя отправителя</string>
+
 </resources>

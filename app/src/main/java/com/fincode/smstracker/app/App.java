@@ -1,7 +1,8 @@
-package com.fincode.smstracker;
+package com.fincode.smstracker.app;
 
 import android.app.Application;
 
+import com.fincode.smstracker.Utils;
 import com.fincode.smstracker.model.DatabaseHelper;
 import com.fincode.smstracker.network.ServerCommunicator;
 import com.fincode.smstracker.preferences.Preferences;
@@ -28,7 +29,7 @@ public class App extends Application {
         super.onCreate();
         database = new DatabaseHelper(this);
         refreshAppSettings();
-
+        Thread.setDefaultUncaughtExceptionHandler(this::handleUncaughtException);
         instance = this;
     }
 

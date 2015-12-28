@@ -1,6 +1,9 @@
-package com.fincode.smstracker.view;
+package com.fincode.smstracker.ui;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -13,21 +16,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.fincode.smstracker.App;
+import com.fincode.smstracker.app.App;
 import com.fincode.smstracker.R;
 import com.fincode.smstracker.Utils;
-import com.fincode.smstracker.eventbus.ActivityRefreshEvent;
-import com.fincode.smstracker.eventbus.BusProvider;
+import com.fincode.smstracker.event.ActivityRefreshEvent;
+import com.fincode.smstracker.event.BusProvider;
 import com.fincode.smstracker.model.ContentManager;
 import com.fincode.smstracker.model.entities.Message;
 import com.fincode.smstracker.preferences.Preferences;
@@ -47,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements DialogFactory.Dia
     private TextView mTxtSentCnt;
     private TextView mTxtUnsentCnt;
     private ListView mLvHistory;
+    private LinearLayout mLlLoading;
 
     private List<Message> mMessages;
     private MessageHistoryAdapter mAdapter;
@@ -57,12 +64,19 @@ public class MainActivity extends AppCompatActivity implements DialogFactory.Dia
         Utils.brandGlowEffect(this, getResources().getColor(R.color.primary));
         setContentView(R.layout.activity_main);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.primaryDark));
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getString(R.string.app_name));
 
         mTxtSentCnt = (TextView) findViewById(R.id.txt_messages_sent);
         mTxtUnsentCnt = (TextView) findViewById(R.id.txt_messages_unsent);
+        mLlLoading = (LinearLayout) findViewById(R.id.ll_message_loading);
 
         mMessages = new ArrayList<>();
         mAdapter = new MessageHistoryAdapter(this, mMessages);
@@ -79,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements DialogFactory.Dia
             showSettingsDialog();
             PreferencesHelper.setFirstLaunch(this, false);
         }
+
+        scanPhoneSms();
     }
 
     // Выбор пункта контекстного меню
@@ -137,13 +153,20 @@ public class MainActivity extends AppCompatActivity implements DialogFactory.Dia
         super.onResume();
         BusProvider.getInstance().register(this);
         refreshHistoryList();
+        MessageSendService service = MessageSendService.getInstance();
+        mLlLoading.setVisibility(service != null && service.isSending() ? View.VISIBLE : View.GONE);
     }
+
 
     @Subscribe
     public void onActivityRefreshEvent(ActivityRefreshEvent event) {
-        refreshHistoryList();
-        makeText(this, getString(event.isSuccessSent() ? R.string.sent_success : R.string.sent_fail), LENGTH_SHORT).show();
+        if (event.isSentFinished()) {
+            refreshHistoryList();
+            makeText(this, getString(event.isSuccessSent() ? R.string.sent_success : R.string.sent_fail), LENGTH_SHORT).show();
+        }
+        mLlLoading.setVisibility(event.isSentFinished() ? View.GONE : View.VISIBLE);
     }
+
 
     @Override
     protected void onPause() {
@@ -181,10 +204,6 @@ public class MainActivity extends AppCompatActivity implements DialogFactory.Dia
                 showSettingsDialog();
                 break;
 
-            case R.id.action_refresh:
-                refreshHistoryList();
-                break;
-
             case R.id.action_delete:
                 MaterialDialog deleteDialog = DialogFactory.newInstanceDeleteAllDialog(this);
                 deleteDialog.show();
@@ -209,16 +228,18 @@ public class MainActivity extends AppCompatActivity implements DialogFactory.Dia
 
         final View btnDialogPositive = settingsDialog
                 .getActionButton(DialogAction.POSITIVE);
-        EditText etServerUrl = (EditText) settingsDialog
-                .getCustomView().findViewById(R.id.et_settings_server_url);
-        EditText etPhoneNumber = (EditText) settingsDialog
-                .getCustomView().findViewById(R.id.et_settings_phone);
-        CheckBox cbEnableSend = (CheckBox) settingsDialog
-                .getCustomView().findViewById(R.id.cb_settings_send_enable);
-        CheckBox cbAbortSms = (CheckBox) settingsDialog
-                .getCustomView().findViewById(R.id.cb_settings_sms_abort);
+        View customView = settingsDialog.getCustomView();
+        if (customView == null) {
+            return;
+        }
+        EditText etServerUrl = (EditText) customView.findViewById(R.id.et_settings_server_url);
+        EditText etPhoneNumber = (EditText) customView.findViewById(R.id.et_settings_phone);
+        EditText etFrom = (EditText) customView.findViewById(R.id.et_settings_from);
+        CheckBox cbEnableSend = (CheckBox) customView.findViewById(R.id.cb_settings_send_enable);
+        CheckBox cbAbortSms = (CheckBox) customView.findViewById(R.id.cb_settings_sms_abort);
 
         Preferences preferences = App.inst().getPreferences();
+        etFrom.setText(preferences.getFrom());
         etServerUrl.setText(preferences.getServerUrl());
         etPhoneNumber.setText(preferences.getPhoneNumber());
         cbEnableSend.setChecked(preferences.isSendEnabled());

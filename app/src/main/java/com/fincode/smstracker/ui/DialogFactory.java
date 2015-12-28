@@ -1,4 +1,4 @@
-package com.fincode.smstracker.view;
+package com.fincode.smstracker.ui;
 
 
 import android.widget.CheckBox;
@@ -52,6 +52,8 @@ public class DialogFactory {
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
+                        EditText etFrom = (EditText) dialog
+                                .getCustomView().findViewById(R.id.et_settings_from);
                         EditText etServerUrl = (EditText) dialog
                                 .getCustomView().findViewById(R.id.et_settings_server_url);
                         EditText etPhoneNumber = (EditText) dialog
@@ -62,10 +64,11 @@ public class DialogFactory {
                                 .getCustomView().findViewById(R.id.cb_settings_sms_abort);
 
                         activity.onSettingsChanged(new Preferences()
-                                        .setPhoneNumber(etPhoneNumber.getText().toString())
-                                        .setServerUrl(etServerUrl.getText().toString())
-                                        .setSendEnabled(cbEnableSend.isChecked())
-                                        .setAbortSms(cbAbortSms.isChecked())
+                                .setPhoneNumber(etPhoneNumber.getText().toString())
+                                .setServerUrl(etServerUrl.getText().toString())
+                                .setSendEnabled(cbEnableSend.isChecked())
+                                .setAbortSms(cbAbortSms.isChecked())
+                                .setFrom(etFrom.getText().toString())
                         );
 
                     }

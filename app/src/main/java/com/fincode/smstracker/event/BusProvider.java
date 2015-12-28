@@ -1,4 +1,4 @@
-package com.fincode.smstracker.eventbus;
+package com.fincode.smstracker.event;
 
 
 import android.os.Handler;

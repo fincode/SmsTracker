@@ -1,28 +1,27 @@
-package com.fincode.smstracker.service;;
+package com.fincode.smstracker.service;
+
+;
 
 import android.app.IntentService;
 
 
-
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
 
-import com.fincode.smstracker.App;
+import com.fincode.smstracker.app.App;
 import com.fincode.smstracker.R;
-import com.fincode.smstracker.eventbus.ActivityRefreshEvent;
-import com.fincode.smstracker.eventbus.BusProvider;
+import com.fincode.smstracker.event.ActivityRefreshEvent;
+import com.fincode.smstracker.event.BusProvider;
 import com.fincode.smstracker.model.ContentManager;
 import com.fincode.smstracker.model.entities.Message;
-import com.fincode.smstracker.view.MainActivity;
+import com.fincode.smstracker.ui.MainActivity;
 
 import java.util.List;
 
@@ -34,6 +33,10 @@ public class MessageSendService extends IntentService {
     public static final String EVENT_REFRESH_GUI = "smstracker.intent.action.REFRESH_GUI";
     public static final String INTENT_SERVICE_DOWNLOAD = "smstracker.service.SEND";
 
+    public static boolean isSending() {
+        return isSending;
+    }
+
     private static boolean isSending = false;
 
     public MessageSendService() {
@@ -41,8 +44,10 @@ public class MessageSendService extends IntentService {
     }
 
 
+    private static MessageSendService mInstance = null;
+
     public static void startSendService(Message message) {
-        Intent mIntent = new Intent(MessageSendService.INTENT_SERVICE_DOWNLOAD);
+        Intent mIntent = new Intent(App.inst(), MessageSendService.class);
         if (message != null) {
             mIntent.putExtra(ARG_ACTION_SAVE_MESSAGE, true);
             mIntent.putExtra(ARG_SMS_BODY, message.getText());
@@ -51,6 +56,16 @@ public class MessageSendService extends IntentService {
             mIntent.putExtra(ARG_ACTION_SAVE_MESSAGE, false);
         }
         App.inst().startService(mIntent);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        mInstance = null;
+    }
+
+    public static MessageSendService getInstance() {
+        return mInstance;
     }
 
     private boolean sendSms(List<Message> message) {
@@ -92,6 +107,7 @@ public class MessageSendService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, startId, startId);
+        mInstance = this;
         return START_STICKY;
     }
 
@@ -105,19 +121,20 @@ public class MessageSendService extends IntentService {
             if (saveMessage) {
                 String sms_body = intent.getExtras().getString(ARG_SMS_BODY);
                 long sms_timestamp = intent.getExtras().getLong(ARG_SMS_TIMESTAMP);
-                ContentManager.createMessage(new Message(sms_body, sms_timestamp).setSent(false));
+                ContentManager.createMessage(new Message(sms_body, sms_timestamp, App.inst().getPreferences().getFrom()).setSent(false));
             }
 
             List<Message> messages = ContentManager.getMessages(false);
             if (messages != null && !messages.isEmpty() && !isSending) {
                 isSending = true;
+                BusProvider.getInstance().post(new ActivityRefreshEvent(false, false));
                 boolean successSent = sendSms(messages);
                 for (Message message : messages) {
                     message.setSent(successSent);
                 }
                 ContentManager.createOrUpdateMessages(messages, false);
-                BusProvider.getInstance().post(new ActivityRefreshEvent(successSent));
                 isSending = false;
+                BusProvider.getInstance().post(new ActivityRefreshEvent(successSent, true));
             }
         }
     }

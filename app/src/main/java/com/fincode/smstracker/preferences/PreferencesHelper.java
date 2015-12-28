@@ -4,7 +4,7 @@ package com.fincode.smstracker.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import static com.fincode.smstracker.Constants.*;
+import static com.fincode.smstracker.app.Config.*;
 
 public class PreferencesHelper {
 
@@ -12,6 +12,7 @@ public class PreferencesHelper {
     public static final String APP_PREFERENCES_NUMBER = "phone_number";
     public static final String APP_PREFERENCES_SEND_ENABLED = "send_enabled";
     public static final String APP_PREFERENCES_ABORT_SMS = "abort_sms_processing";
+    public static final String APP_PREFERENCES_FROM = "from";
     public static final String APP_PREFERENCES_SERVER_URL = "server_url";
     public static final String APP_PREFERENCES_FIRST_LAUNCH = "first_launch";
 
@@ -25,6 +26,7 @@ public class PreferencesHelper {
         editor.putString(APP_PREFERENCES_SERVER_URL, serverUrl);
         editor.putBoolean(APP_PREFERENCES_SEND_ENABLED, preferences.isSendEnabled());
         editor.putBoolean(APP_PREFERENCES_ABORT_SMS, preferences.isAbortSms());
+        editor.putString(APP_PREFERENCES_FROM, preferences.getFrom());
         editor.apply();
     }
 
@@ -40,7 +42,8 @@ public class PreferencesHelper {
                 .setServerUrl(serverUrl)
                 .setPhoneNumber(preferences.getString(APP_PREFERENCES_NUMBER, ""))
                 .setSendEnabled(preferences.getBoolean(APP_PREFERENCES_SEND_ENABLED, true))
-                .setAbortSms(preferences.getBoolean(APP_PREFERENCES_ABORT_SMS, false));
+                .setAbortSms(preferences.getBoolean(APP_PREFERENCES_ABORT_SMS, false))
+                .setFrom(preferences.getString(APP_PREFERENCES_FROM, ""));
     }
 
     public static boolean isFirstLaunch(Context context) {

@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 
+import com.fincode.smstracker.app.App;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
