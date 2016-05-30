@@ -1,2 +1,2 @@
 # SmsTracker
-Android app for send input sms message to remote server.
+Android app for a sending input sms message to remote server.
