@@ -1,2 +1,2 @@
 # SmsTracker
-Android приложения для перехвата и отправки SMS на удаленный веб-сервер
+Android app for send input sms message to remote server.
